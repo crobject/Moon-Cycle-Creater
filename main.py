@@ -6,8 +6,14 @@ import io
 import json
 import random
 import numpy as np
+import argparse
 
-LOCATION = 'Toledo, OH'
+LOCATION = 'New York, NY'
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--location', help='location that the moon data will be calculated from')
+parser.add_argument('--start',  help='start date for the data collection')
+parser.add_argument('--end',  help='end date for the data collection')
 
 def calculate_moon_tilt(date, time):
     pass
@@ -35,5 +41,13 @@ def get_moon_picture(date, time, location):
 
 
 if __name__ == '__main__':
+    args = parser.parse_args()
+    LOCATION = args.location
     random.seed(time.clock())
-    generate_request(datetime.date(2016, 3, 2), datetime.date(2016, 3, 30))
+    try:
+        start = datetime.datetime.strptime(args.start, '%d/%M/%Y')
+        end = datetime.datetime.strptime(args.end, '%d/%M/%Y')
+    except Exception as E:
+        print('invalid date format...Should be 1/15/2015 for January 15th 2015')
+        exit(0)        
+    generate_request(start, end)
